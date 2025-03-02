@@ -95,12 +95,6 @@ class FlutterDownloaderPlugin : MethodChannel.MethodCallHandler, FlutterPlugin {
         allowCellular: Boolean
     ): WorkRequest {
         return OneTimeWorkRequest.Builder(DownloadWorker::class.java)
-            .setConstraints(
-                Constraints.Builder()
-                    .setRequiresStorageNotLow(requiresStorageNotLow)
-                    .setRequiredNetworkType(if (allowCellular) NetworkType.CONNECTED else NetworkType.UNMETERED)
-                    .build()
-            )
             .addTag(TAG)
             .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.SECONDS)
             .setInputData(
